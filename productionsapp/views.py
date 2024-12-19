@@ -3,8 +3,10 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import *
-from django.db.models import Count, Sum
-from django.db.models.functions import TruncMonth
+from django.db.models import Sum, F, Func, IntegerField
+from django.db.models.functions import Cast, TruncMonth
+from datetime import datetime
+from django.http import JsonResponse
 from .models import*
 
 # Create your views here.
@@ -48,9 +50,37 @@ def sign_up_user(request):
         return render(request,'authentication/signin.html',{'form':form})
     return render(request,'authentication/signin.html',{'form':form})
 # analytics dashboard
+
 @login_required(login_url='/sign-in/')   
 def home_page(request):
     return render(request, 'dashboards/analytics.html')
+@login_required(login_url='/sign-in/')
+def get_monthly_production_data(request):
+    try:
+        # Use Django ORM to group by month
+        data = (
+            PackingData.objects.annotate(
+                month=TruncMonth('date'),  # Group by month
+                total_quantity=Cast(F('achieved'), IntegerField()) * 24
+            )
+            .values('month')
+            .annotate(total=Sum('total_quantity'))
+            .order_by('month')
+        )
+
+        # Format the month for display (e.g., 'December 2024')
+        formatted_data = [
+            {
+                "month": entry["month"].strftime("%B %Y"),  # Properly format date
+                "total": entry["total"]
+            }
+            for entry in data
+        ]
+
+        return JsonResponse(formatted_data, safe=False)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 # production views
 # csrqs view
 @login_required(login_url='/sign-in/')

@@ -99,90 +99,84 @@
              </div>
              {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
              {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
-<div class="col-xl-6">
-    <div class="card custom-card">
-        <div class="card-header">
-            <div class="card-title">Chart.js Smooth Line Chart with Volume</div>
-        </div>
-        <div class="card-body">
-            <canvas id="myChart" class="chartjs-chart"></canvas>
-        </div>
-    </div>
-</div>
-
-{% comment %} Chart.js script with smooth line and volume graph {% endcomment %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    const ctx = document.getElementById('myChart');
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [
-                {
-                    label: 'Smooth Line Chart',
-                    data: [12, 19, 3, 5, 2, 3],
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderWidth: 2,
-                    fill: true, // Fill under the line
-                    tension: 0.4 // Smoothing effect
-                },
-                {
-                    type: 'bar', // Add a bar chart for the volume graph
-                    label: 'Volume',
-                    data: [8, 15, 5, 10, 6, 7],
-                    backgroundColor: 'rgba(153, 102, 255, 0.5)',
-                    borderColor: 'rgba(153, 102, 255, 1)',
-                    borderWidth: 1,
-                    yAxisID: 'yVolume' // Bind to a separate y-axis
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    position: 'left', // Main y-axis for the line chart
-                    title: {
-                        display: true,
-                        text: 'Line Chart Values'
-                    }
-                },
-                yVolume: {
-                    beginAtZero: true,
-                    position: 'right', // Secondary y-axis for the volume graph
-                    title: {
-                        display: true,
-                        text: 'Volume'
-                    },
-                    grid: {
-                        drawOnChartArea: false // Prevent grid lines from overlapping
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Categories'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true, // Show the legend for datasets
-                    position: 'top'
-                },
-                tooltip: {
-                    mode: 'index', // Show tooltips for all datasets on hover
-                    intersect: false
-                }
-            }
-        }
-    });
-</script>
+             <div class="col-xl-6">
+                <div class="card custom-card">
+                    <div class="card-header">
+                        <div class="card-title">Monthly Production Quantity</div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="monthlyProductionChart" class="chartjs-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chart.js Script -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Fetch monthly production data
+                fetch('{% url "get_monthly_production_data" %}')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Process data for Chart.js
+                        const labels = data.map(item => item.month); // X-axis: Month-Year
+                        const totals = data.map(item => item.total); // Y-axis: Total Production
+            
+                        // Initialize the Chart
+                        const ctx = document.getElementById('monthlyProductionChart').getContext('2d');
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    label: 'Total Production Quantity',
+                                    data: totals,
+                                    borderColor: 'rgba(75, 192, 192, 1)',  // Line color
+                                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+                                    borderWidth: 2, // Line thickness
+                                    tension: 0.4, // Smooth curve
+                                    fill: true // Enable volume area below the line
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'top' // Position of the legend
+                                    },
+                                    tooltip: {
+                                        mode: 'index', // Show tooltips for all datasets at the hovered index
+                                        intersect: false // Tooltips are not restricted to data points
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Month'
+                                        },
+                                        grid: {
+                                            display: false // Hide grid lines for X-axis
+                                        }
+                                    },
+                                    y: {
+                                        beginAtZero: true,
+                                        title: {
+                                            display: true,
+                                            text: 'Production Quantity (Pieces)'
+                                        },
+                                        grid: {
+                                            color: 'rgba(200, 200, 200, 0.2)' // Subtle grid lines for Y-axis
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error fetching production data:', error));
+            </script>
+            
+            
 
             
 {%endblock%}
