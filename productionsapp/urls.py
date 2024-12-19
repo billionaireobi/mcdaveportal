@@ -9,8 +9,11 @@ urlpatterns = [
     path('sign-out/',views.sign_out_user,name='sign-out'),
     path('sign-up/',views.sign_up_user,name='sign-up'),
     path('home/',views.home_page,name='home'),
+    # charts urls
     path('get_monthly_production_data/', views.get_monthly_production_data, name='get_monthly_production_data'),
-    
+    path('get_daily/',views.daily_chart,name='get_daily'),
+    path('get_daily_production_data/', views.get_daily_production_data, name='get_daily_production_data'),
+    path('get_hourly_production_data/', views.get_hourly_production_data, name='get_hourly_production_data'),
     # production urls
          # crqs production urls
     path('crqs-info/',views.production_crqs,name='crqs-info'),

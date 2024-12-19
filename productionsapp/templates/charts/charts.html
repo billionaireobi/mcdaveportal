@@ -1,0 +1,294 @@
+{% extends "partials/base.html" %}
+
+{%block title%}MCDAVE HOME{%endblock%}
+{%block content%}
+
+
+        <!-- Page Header -->
+        <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+            <h1 class="page-title fw-semibold fs-18 mb-0">DASHBOARD</h1>
+            <div class="ms-md-1 ms-0">
+                <nav>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{%url "home"%}">Dashboards</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">charts</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Header Close -->
+         {% comment %} daily chart {% endcomment %}
+<style>
+    #dailyProductionChart {
+        cursor: crosshair; /* Changes the cursor to a plus sign (+) */
+    }
+</style>
+<div class="row">
+    <!-- Daily Production Chart -->
+    <div class="col-xl-6">
+        <div class="card custom-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-title">Daily Production Quantity Graph</div>
+                <div class="dropdown">
+                    <a href="javascript:void(0);" class="p-8 fs-12 text-muted" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        View All<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="dropdown-item" href="javascript:void(0);">Last 7 Days</a></li>
+                        <li><a class="dropdown-item" href="javascript:void(0);">Last 30 Days</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="dailyProductionChart" class="chartjs-chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <style>
+        #hourlyProductionChart {
+            cursor: crosshair; /* Changes the cursor to a plus sign (+) */
+        }
+    </style>
+    <!-- Hourly Production Chart -->
+    <div class="col-xl-6">
+        <div class="card custom-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-title">Hourly Production Quantity Graph</div>
+                <div class="dropdown">
+                    <a href="javascript:void(0);" class="p-8 fs-12 text-muted" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        View All<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                    </a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a class="dropdown-item" href="javascript:void(0);">Last 24 Hours</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <canvas id="hourlyProductionChart" class="chartjs-chart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% comment %} monthly {% endcomment %}
+<style>
+    #monthlyProductionChart {
+        cursor: crosshair; /* Changes the cursor to a plus sign (+) */
+    }
+</style>
+ <div class="col-xl-12">
+    <div class="card custom-card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-title">Monthly Production Quantity Graph</div>
+            
+        </div>
+        <div class="card-body">
+            <canvas id="monthlyProductionChart" class="chartjs-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Fetch monthly production data
+    fetch('{% url "get_monthly_production_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            // Process data for Chart.js
+            const labels = data.map(item => item.month); // X-axis: Month-Year
+            const totals = data.map(item => item.total); // Y-axis: Total Production
+
+            // Initialize the Chart
+            const ctx = document.getElementById('monthlyProductionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Production Quantity',
+                        data: totals,
+                        borderColor: 'rgba(75, 192, 192, 1)',  // Line color
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
+                        borderWidth: 2, // Line thickness
+                        tension: 0.4, // Smooth curve 
+                        fill: true // Enable volume area below the line
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top' // Position of the legend
+                        },
+                        tooltip: {
+                            mode: 'index', // Show tooltips for all datasets at the hovered index
+                            intersect: false // Tooltips are not restricted to data points
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Month'
+                            },
+                            grid: {
+                                display: false // Hide grid lines for X-axis
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Production Quantity (Pieces)'
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)' // Subtle grid lines for Y-axis
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching production data:', error));
+</script>
+ {% comment %} endmonthly {% endcomment %}
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Fetch daily production data
+    fetch('{% url "get_daily_production_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            // Process data for Chart.js
+            const labels = data.map(item => item.day); // X-axis: Days
+            const totals = data.map(item => item.total); // Y-axis: Total Production
+
+            // Initialize the Chart
+            const ctx = document.getElementById('dailyProductionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line', // Change to 'line' for a smooth curve
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Production Quantity',
+                        data: totals,
+                        borderColor: 'rgba(54, 162, 235, 1)', // Line color
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Fill color
+                        borderWidth: 2, // Line thickness
+                        tension: 0.4, // Smooth curve
+                        fill: true // Enable volume area below the line
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top' // Position of the legend
+                        },
+                        tooltip: {
+                            mode: 'index', // Show tooltips for all datasets at the hovered index
+                            intersect: false // Tooltips are not restricted to data points
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Day'
+                            },
+                            grid: {
+                                display: false // Hide grid lines for X-axis
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Production achieved (Pieces)'
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)' // Subtle grid lines for Y-axis
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching production data:', error));
+</script>
+
+{% comment %} hourly graph {% endcomment %}
+<!-- Chart.js Script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Fetch hourly production data
+    fetch('{% url "get_hourly_production_data" %}')
+        .then(response => response.json())
+        .then(data => {
+            // Process data for Chart.js
+            const labels = data.map(item => item.hour); // X-axis: Hours
+            const totals = data.map(item => item.total); // Y-axis: Total Production
+
+            // Initialize the Chart
+            const ctx = document.getElementById('hourlyProductionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Total Production Quantity',
+                        data: totals,
+                        borderColor: 'rgba(255, 99, 132, 1)',  // Line color
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)', // Fill color
+                        borderWidth: 2, // Line thickness
+                        tension: 0.4, // Smooth curve
+                        fill: true // Enable volume area below the line
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top' // Position of the legend
+                        },
+                        tooltip: {
+                            mode: 'index', // Show tooltips for all datasets at the hovered index
+                            intersect: false // Tooltips are not restricted to data points
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: false,
+                                text: 'Hour'
+                            },
+                            grid: {
+                                display: false // Hide grid lines for X-axis
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Production Quantity (Pieces)'
+                            },
+                            grid: {
+                                color: 'rgba(200, 200, 200, 0.2)' // Subtle grid lines for Y-axis
+                            }
+                        }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching production data:', error));
+</script>
+
+ {% comment %} hourly graph {% endcomment %}
+
+{%endblock%}

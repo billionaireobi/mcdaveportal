@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import *
 from django.db.models import Sum, F, Func, IntegerField
-from django.db.models.functions import Cast, TruncMonth
+from django.db.models.functions import Cast, TruncMonth, TruncDay, TruncHour
 from datetime import datetime
 from django.http import JsonResponse
 from .models import*
@@ -81,6 +81,67 @@ def get_monthly_production_data(request):
 
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+# daily production chart
+@login_required(login_url='/sign-in/')
+def daily_chart(request):
+    return render(request,"charts/charts.html")
+# daily json
+@login_required(login_url='/sign-in/')
+def get_daily_production_data(request):
+    try:
+        # Group by day
+        data = (
+            PackingData.objects.annotate(
+                day=TruncDay('date'),  # Group by day
+                total_quantity=Cast(F('achieved'), IntegerField())#*24  # Calculate total for each day
+            )
+            .values('day')  # Only keep the grouped day
+            .annotate(total=Sum('total_quantity'))  # Sum the total_quantity for the day
+            .order_by('day')  # Sort by day
+        )
+
+        # Format the response data
+        formatted_data = [
+            {
+                "day": entry["day"].strftime("%Y-%m-%d"),  # Format day as YYYY-MM-DD
+                "total": entry["total"]
+            }
+            for entry in data
+        ]
+
+        return JsonResponse(formatted_data, safe=False)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+#hourly charts
+def get_hourly_production_data(request):
+    try:
+        # Group data by hour
+        data = (
+            PackingData.objects.annotate(
+                 
+                hour=TruncHour('date'),  # Group by hour
+                total_quantity=Cast(F('achieved'), IntegerField())  # Cast achieved to integer
+            )
+            .values('hour')  # Only keep the grouped hour
+            .annotate(total=Sum('total_quantity'))  # Sum the total_quantity for each hour
+            .order_by('hour')  # Sort by hour
+        )
+
+        # Format the response data
+        formatted_data = [
+            {   
+                "hour": entry["hour"].strftime("%H:%M"),  # Format hour as HH:MM
+                "total": entry["total"]
+            }
+            for entry in data
+        ]
+
+        return JsonResponse(formatted_data, safe=False)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
 # production views
 # csrqs view
 @login_required(login_url='/sign-in/')

@@ -27,7 +27,9 @@
                          <div class="d-flex align-items-center w-100">
                              <div class="me-2">
                                 <div>
-                                    <div class="fs-15 fw-semibold">EMPLOYEES</div>
+                                    <div class="fs-15 fw-semibold">
+                                        
+                                        EMPLOYEES</div>
                                 </div>
                                  <h4 class="fw-semibold mt-1">890</h4>
                              </div>
@@ -99,10 +101,26 @@
              </div>
              {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
              {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
+             <style>
+                #monthlyProductionChart {
+                    cursor: crosshair; /* Changes the cursor to a plus sign (+) */
+                }
+            </style>
              <div class="col-xl-6">
                 <div class="card custom-card">
-                    <div class="card-header">
-                        <div class="card-title">Monthly Production Quantity</div>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div class="card-title">Monthly Production Quantity Graph</div>
+                        <div class="dropdown">
+                            <a href="javascript:void(0);" class="p-8 fs-12 text-muted" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                View All<i class="ri-arrow-down-s-line align-middle ms-1 d-inline-block"></i>
+                            </a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a class="dropdown-item" href="{%url 'get_daily'%}">Weekly</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Monthly</a></li>
+                                <li><a class="dropdown-item" href="javascript:void(0);">Yearly</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="card-body">
                         <canvas id="monthlyProductionChart" class="chartjs-chart"></canvas>
@@ -133,7 +151,7 @@
                                     borderColor: 'rgba(75, 192, 192, 1)',  // Line color
                                     backgroundColor: 'rgba(75, 192, 192, 0.2)', // Fill color
                                     borderWidth: 2, // Line thickness
-                                    tension: 0.4, // Smooth curve
+                                    tension: 0.4, // Smooth curve 
                                     fill: true // Enable volume area below the line
                                 }]
                             },
@@ -175,8 +193,5 @@
                     })
                     .catch(error => console.error('Error fetching production data:', error));
             </script>
-            
-            
-
-            
+              
 {%endblock%}
