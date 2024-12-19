@@ -1,0 +1,188 @@
+{% extends "partials/base.html" %}
+
+{%block title%}MCDAVE HOME{%endblock%}
+{%block content%}
+
+
+        <!-- Page Header -->
+        <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+            <h1 class="page-title fw-semibold fs-18 mb-0">DASHBOARD</h1>
+            <div class="ms-md-1 ms-0">
+                <nav>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{%url "home"%}">Dashboards</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Analytics</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <!-- Page Header Close -->
+         {% comment %} analtics page {% endcomment %}
+         <!-- Start::row-9 -->
+         
+         <div class="row">
+             <div class="col-xl-3">
+                 <div class="card custom-card card-bg-primary">
+                     <div class="card-body">
+                         <div class="d-flex align-items-center w-100">
+                             <div class="me-2">
+                                <div>
+                                    <div class="fs-15 fw-semibold">EMPLOYEES</div>
+                                </div>
+                                 <h4 class="fw-semibold mt-1">890</h4>
+                             </div>
+                             
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-xl-3">
+                 <div class="card custom-card card-bg-secondary">
+                     <div class="card-body">
+                         <div class="d-flex align-items-center w-100">
+                             <div class="me-2">
+                                 <span class="avatar avatar-rounded">
+                                     <img src="../assets/images/faces/12.jpg" alt="img">
+                                 </span>
+                             </div>
+                             <div class="">
+                                 <div class="fs-15 fw-semibold">Elisha Corner</div>
+                                 <p class="mb-0 text-fixed-white op-7 fs-12">Completed 24 days back</p>
+                             </div>
+                             <div class="ms-auto">
+                                 <a href="javascript:void(0);" class="text-fixed-white"><i class="bi bi-three-dots-vertical"></i></a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-xl-3">
+                 <div class="card custom-card card-bg-warning">
+                     <div class="card-body">
+                         <div class="d-flex align-items-center w-100">
+                             <div class="me-2">
+                                 <span class="avatar avatar-rounded">
+                                     <img src="../assets/images/faces/1.jpg" alt="img">
+                                 </span>
+                             </div>
+                             <div class="">
+                                 <div class="fs-15 fw-semibold">Sarah Alina</div>
+                                 <p class="mb-0 text-fixed-white op-7 fs-12">Completed today</p>
+                             </div>
+                             <div class="ms-auto">
+                                 <a href="javascript:void(0);" class="text-fixed-white"><i class="bi bi-three-dots-vertical"></i></a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="col-xl-3">
+                 <div class="card custom-card card-bg-success">
+                     <div class="card-body">
+                         <div class="d-flex align-items-center w-100">
+                             <div class="me-2">
+                                 <span class="avatar avatar-rounded">
+                                     <img src="../assets/images/faces/5.jpg" alt="img">
+                                 </span>
+                             </div>
+                             <div class="">
+                                 <div class="fs-15 fw-semibold">Samantha sid</div>
+                                 <p class="mb-0 text-fixed-white op-7 fs-12">In leave for 1 month</p>
+                             </div>
+                             <div class="ms-auto">
+                                 <a href="javascript:void(0);" class="text-fixed-white"><i class="bi bi-three-dots-vertical"></i></a>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
+             {% comment %} Chart.js line chart with smooth lines and volume graph {% endcomment %}
+<div class="col-xl-6">
+    <div class="card custom-card">
+        <div class="card-header">
+            <div class="card-title">Chart.js Smooth Line Chart with Volume</div>
+        </div>
+        <div class="card-body">
+            <canvas id="myChart" class="chartjs-chart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% comment %} Chart.js script with smooth line and volume graph {% endcomment %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [
+                {
+                    label: 'Smooth Line Chart',
+                    data: [12, 19, 3, 5, 2, 3],
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderWidth: 2,
+                    fill: true, // Fill under the line
+                    tension: 0.4 // Smoothing effect
+                },
+                {
+                    type: 'bar', // Add a bar chart for the volume graph
+                    label: 'Volume',
+                    data: [8, 15, 5, 10, 6, 7],
+                    backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    yAxisID: 'yVolume' // Bind to a separate y-axis
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    position: 'left', // Main y-axis for the line chart
+                    title: {
+                        display: true,
+                        text: 'Line Chart Values'
+                    }
+                },
+                yVolume: {
+                    beginAtZero: true,
+                    position: 'right', // Secondary y-axis for the volume graph
+                    title: {
+                        display: true,
+                        text: 'Volume'
+                    },
+                    grid: {
+                        drawOnChartArea: false // Prevent grid lines from overlapping
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Categories'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // Show the legend for datasets
+                    position: 'top'
+                },
+                tooltip: {
+                    mode: 'index', // Show tooltips for all datasets on hover
+                    intersect: false
+                }
+            }
+        }
+    });
+</script>
+
+            
+{%endblock%}

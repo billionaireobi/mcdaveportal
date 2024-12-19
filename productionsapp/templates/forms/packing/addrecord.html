@@ -1,0 +1,178 @@
+                {% comment %} {% extends "partials/base.html" %} {% endcomment %}
+                {% load static %}
+                {% comment %} {% block title %}MCDAVE QUALITY CRQS ASSESSMENT-FM-01-MDL-QA{% endblock %} {% endcomment %}
+                {%if user.is_authenticated and user.is_staff and user.is_superuser%}
+                {% block content %}
+                <html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="light" data-menu-styles="dark" data-toggled="close">
+
+            <head>
+
+                <!-- Meta Data -->
+                <meta charset="UTF-8">
+                <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="Description" content="Bootstrap Responsive Admin Web Dashboard HTML5 Template">
+                <meta name="Author" content="Spruko Technologies Private Limited">
+                <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+                
+            <!-- Favicon -->
+            <link rel="icon" href="{% static 'assets/images/mcdave/logo.png'%}" type="image/x-icon">
+                
+            <!-- Choices JS -->
+            <script src="{% static 'assets/libs/choices.js/public/assets/scripts/choices.min.js'%}"></script>
+
+            <!-- Main Theme Js -->
+            <script src="{% static 'assets/js/main.js'%}"></script>
+            
+            <!-- Bootstrap Css -->
+            <link id="style" href="{% static 'assets/libs/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet" >
+
+            <!-- Style Css -->
+            <link href="{% static 'assets/css/styles.min.css'%}" rel="stylesheet" >
+
+            <!-- Icons Css -->
+            <link href="{% static 'assets/css/icons.css'%}" rel="stylesheet" >
+
+            <!-- Node Waves Css -->
+            <link href="{% static 'assets/libs/node-waves/waves.min.css'%}" rel="stylesheet" > 
+
+            <!-- Simplebar Css -->
+            <link href="{% static 'assets/libs/simplebar/simplebar.min.css'%}" rel="stylesheet" >
+            
+            <!-- Color Picker Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/flatpickr/flatpickr.min.css'%}">
+            <link rel="stylesheet" href="{% static 'assets/libs/@simonwep/pickr/themes/nano.min.css'%}">
+
+            <!-- Choices Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/choices.js/public/assets/styles/choices.min.css'%}">
+
+                <div class="row offset-md-3">
+                    <div class="col-xl-6">
+                        <div class="card custom-card mt-4">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    MCDAVE HOLDINGS DAILY/HOURLY TARGET REGISTER 
+                                </div>
+                               </div>
+                        <div class="card-body">
+                        <form method="POST"action="{%url "pack-record"%}" class="row g-3 mt-0">
+                            {%csrf_token%}
+                        <div class="col-md-12">
+                            {% if messages %}
+                                <ul>
+                                    {% for message in messages %}
+                                        <li class="{{ message.tags }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>                               
+                            {% endif %}                             
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <div class="error">{{ field.label }}: {{ field.errors|join:", " }}</div>
+                                {% endif %}                             
+                            {% endfor %}
+                        </div>
+                            <div class="col-md-6">
+                                {{ form.date }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.week }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.sku }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.target}}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.achieved}}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.batch_number }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.variant }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.comment }}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.assessor }}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success-light btn-wave">ADDRECORDS</button>
+                                <a href="{%url 'packing-info'%}"class="btn btn-info-light btn-wave">BACK</a>
+                            </div>
+                            </form>
+                         </div>  
+                </div>
+            </div>
+        </div>
+            
+        {% comment %} json response data {% endcomment %}
+        <script>
+        document.getElementById('packdatetime').addEventListener('change', function() {
+            const dateValue = new Date(this.value);
+                            
+             // Check if the date is valid
+             if (!isNaN(dateValue)) {
+                 // Calculate the week number
+                 const startDate = new Date(dateValue.getFullYear(), 0, 1);
+                 const days = Math.floor((dateValue - startDate) / (24 * 60 * 60 * 1000));
+                 const weekNumber = Math.ceil((days + startDate.getDay() + 1) / 7);
+                                const year = dateValue.getFullYear();
+                 
+                // Format the week string
+                const weekString = `week ${weekNumber}, ${year}`;
+                                
+                // Set the week input
+                document.getElementById('packweek').value = weekString;
+             } else {
+                                document.getElementById('packweek').value = ''; // Clear the week input if date is invalid
+             }
+         });
+        </script>
+
+        <div class="scrollToTop">
+            <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+        </div>
+        <div id="responsive-overlay"></div>
+
+        <!-- Popper JS -->
+        <script src="{% static 'assets/libs/@popperjs/core/umd/popper.min.js'%}"></script>
+
+        <!-- Bootstrap JS -->
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+        <!-- Defaultmenu JS -->
+        <script src="{% static 'assets/js/defaultmenu.min.js'%}"></script>
+
+        <!-- Node Waves JS-->
+        <script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+
+        <!-- Sticky JS -->
+        <script src="{% static 'assets/js/sticky.js'%}"></script>
+
+        <!-- Simplebar JS -->
+        <script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
+        <script src="{% static 'assets/js/simplebar.js'%}"></script>
+
+        <!-- Color Picker JS -->
+        <script src="{% static 'assets/libs/@simonwep/pickr/pickr.es5.min.js'%}"></script>
+
+
+        <!-- Apex Charts JS -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>
+
+        <!-- Used For Sessions By Device Chart -->
+        <script src="{% static 'assets/libs/moment/moment.js'%}"></script>
+        <!-- Analytics-Dashboard JS -->
+        <script src="{% static 'assets/js/analytics-dashboard.js'%}"></script>
+
+
+        <!-- Custom-Switcher JS -->
+        <script src="{% static 'assets/js/custom-switcher.min.js'%}"></script>
+
+        <!-- Custom JS -->
+        <script src="{% static 'assets/js/custom.js'%}"></script>
+        {%endblock%}
+{%endif%}

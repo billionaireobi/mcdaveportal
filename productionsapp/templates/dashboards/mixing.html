@@ -1,0 +1,137 @@
+{% extends "partials/base.html" %}
+{% load static %}
+{%if user.is_authenticated and user.is_staff and user.is_superuser%}
+{% block title %}MCDAVE QUALITY CRQS ASSESSMENT-FM-01-MDL-QA{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.bootstrap5.min.css">
+<!-- Prism CSS -->
+<link rel="stylesheet" href="{% static 'assets/libs/prismjs/themes/prism-coy.min.css'%}">
+<link rel="stylesheet" href="{% static 'assets/libs/dragula/dragula.min.css'%}">
+
+    <!-- Page Header -->
+    <div class="d-md-flex d-block align-items-center justify-content-between my-4 page-header-breadcrumb">
+        <h1 class="page-title fw-semibold fs-18 mb-0">PROCESSING DATA</h1>
+        <div class="ms-md-1 ms-0">
+            <nav>
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url "home" %}">Dashboards</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">mixing</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- Page Header Close -->
+   {% comment %} custom cards {% endcomment %}
+   <div class="row">
+    <div class="col-xl-4">
+        <div class="card border border-warning custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">VIM LEMON</h6>
+                <p class="card-text mb-0">Vim lemon production materials and data collection</p>
+                <a href="{%url 'vlemonke'%}"class="btn btn-success-light btn-wave">vim lemon</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-warning custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">VIM LAVENDER</h6>
+                    <p class="card-text mb-0">Vim Lavender production materials and data collection</p>
+                    <a href="{%url 'vlavenderke'%}"class="btn btn-success-light btn-wave">vim lavendar</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-warning custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">VIM LAVENDER & LEMON SA</h6>
+                <p class="card-text mb-0">Vim Lavender & vim Lemon production for S.Africa</p>
+                <a href=""class="btn btn-success-light btn-wave">Vim<sup>lavendar</sup>SA</a>
+                <a href=""class="btn btn-success-light btn-wave">Vim<sup>lemon</sup>SA</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-warning custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">DOMESTOS</h6>
+                    <p class="card-text mb-0">Domestos production materials and data collection</p>
+                    <a href=""class="btn btn-secondary-light btn-wave">Domestos</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-primary custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">SUNLIGHT LAVENDER</h6>
+                    <p class="card-text mb-0">Sunlight Lavender production materials and data collection</p>
+                    <a href=""class="btn btn-secondary-light btn-wave">Sunlight Lavender</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-primary custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">SUNLIGHT LEMON</h6>
+                    <p class="card-text mb-0">Sunlight Lemon production materials and data collection</p>
+                    <a href=""class="btn btn-secondary-light btn-wave">Sunlight Lemon</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-primary custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">EMIT 6</h6>
+                    <p class="card-text mb-0">EMIT 6 production and data collection</p>
+                    <a href=""class="btn btn-primary-light btn-wave">Emit 6</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-primary custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">ADJUNCT EMIT</h6>
+                    <p class="card-text mb-0">ADJUNCT EMIT production and data collection</p>
+                    <a href=""class="btn btn-primary-light btn-wave">Adjunct Emit</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card border border-success custom-card">
+            <div class="card-body">
+                <h6 class="card-text fw-semibold">SIXIN SULPHATE BLEND</h6>
+                    <p class="card-text mb-0">SIXIN BLEND production and data collection</p>
+                    <a href=""class="btn btn-primary-light btn-wave">Sixin Blend</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+   {% comment %} end customcards {% endcomment %}
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+   <!-- Datatables Cdn -->
+   <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+   <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+   <script src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.3/js/dataTables.buttons.min.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.print.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.6/pdfmake.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+   <script src="https://cdn.datatables.net/buttons/2.2.3/js/buttons.html5.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+   <!-- Internal Datatables JS -->
+   <script src="{% static 'assets/js/datatables.js'%}"></script>
+   <!-- Prism JS -->
+   <script src="{% static 'assets/libs/prismjs/prism.js'%}"></script>
+   <script src="{% static 'assets/js/prism-custom.js'%}"></script>
+
+    <!-- Dragula JS -->
+    <script src="{% static 'assets/libs/dragula/dragula.min.js'%}"></script>
+
+    <!-- Internal Dragula JS -->
+    <script src="{% static 'assets/js/draggable-cards.js'%}"></script>
+{% endblock %}
+{%endif%}

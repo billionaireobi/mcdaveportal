@@ -1,0 +1,254 @@
+                {% comment %} {% extends "partials/base.html" %} {% endcomment %}
+                {% load static %}
+                {% comment %} {% block title %}MCDAVE QUALITY CRQS ASSESSMENT-FM-01-MDL-QA{% endblock %} {% endcomment %}
+                {%if user.is_authenticated and user.is_staff and user.is_superuser%}
+                {% block content %}
+                <html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="light" data-menu-styles="dark" data-toggled="close">
+
+            <head>
+
+                <!-- Meta Data -->
+                <meta charset="UTF-8">
+                <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <title>vimlemon.ke.add_record</title>
+                <meta name="Description" content="Bootstrap Responsive Admin Web Dashboard HTML5 Template">
+                <meta name="Author" content="Spruko Technologies Private Limited">
+                <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+                
+            <!-- Favicon -->
+            <link rel="icon" href="{% static 'assets/images/mcdave/logo.png'%}" type="image/x-icon">
+                
+            <!-- Choices JS -->
+            <script src="{% static 'assets/libs/choices.js/public/assets/scripts/choices.min.js'%}"></script>
+
+            <!-- Main Theme Js -->
+            <script src="{% static 'assets/js/main.js'%}"></script>
+            
+            <!-- Bootstrap Css -->
+            <link id="style" href="{% static 'assets/libs/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet" >
+
+            <!-- Style Css -->
+            <link href="{% static 'assets/css/styles.min.css'%}" rel="stylesheet" >
+
+            <!-- Icons Css -->
+            <link href="{% static 'assets/css/icons.css'%}" rel="stylesheet" >
+
+            <!-- Node Waves Css -->
+            <link href="{% static 'assets/libs/node-waves/waves.min.css'%}" rel="stylesheet" > 
+
+            <!-- Simplebar Css -->
+            <link href="{% static 'assets/libs/simplebar/simplebar.min.css'%}" rel="stylesheet" >
+            
+            <!-- Color Picker Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/flatpickr/flatpickr.min.css'%}">
+            <link rel="stylesheet" href="{% static 'assets/libs/@simonwep/pickr/themes/nano.min.css'%}">
+
+            <!-- Choices Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/choices.js/public/assets/styles/choices.min.css'%}">
+
+                <div class="row offset-md-3">
+                    <div class="col-xl-6">
+                        <div class="card custom-card mt-4">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    MCDAVE VIM LEMON PRODUCTION
+                                </div>
+                               </div>
+                        <div class="card-body">
+                        <form method="POST"action="{%url "addrecordvlemonke"%}" class="row g-3 mt-0">
+                            {%csrf_token%}
+                        <div class="col-md-12">
+                            {% if messages %}
+                                <ul>
+                                    {% for message in messages %}
+                                        <li class="{{ message.tags }}">{{ message }}</li>
+                                    {% endfor %}
+                                </ul>                               
+                            {% endif %}                             
+                            {% for field in form %}
+                                {% if field.errors %}
+                                    <div class="error">{{ field.label }}: {{ field.errors|join:", " }}</div>
+                                {% endif %}                             
+                            {% endfor %}
+                        </div>
+                            <div class="col-md-4">
+                                {{ form.date }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.hash }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.start_time }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.stop_time }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.batch_time }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.whiting_quantity }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.whiting_batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.magadi_quantity }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.magadi_batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.tcca_quantity }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.tcca_batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.sulphonic_acid_quantity }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.sulphonic_acid_batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.lime_perf_quantity }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.lime_perf_batch_number }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.batch_size }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.pressure }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.done_by }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.checked_by }}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.verified_by }}
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success-light btn-wave">ADDRECORDS</button>
+                                <a href="{%url 'vlemonke'%}"class="btn btn-info-light btn-wave">BACK</a>
+                            </div>
+                            </form>
+                         </div>  
+                </div>
+            </div>
+        </div>
+            
+        {% comment %} json response data {% endcomment %}
+        <div class="scrollToTop">
+            <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+        </div>
+        <div id="responsive-overlay"></div>
+
+        {% comment %} javascript {% endcomment %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Get the date, start_time, and stop_time fields
+                const dateField = document.getElementById("date-field");
+                const batchNoField = document.getElementById("batch-no-field");
+                const startTimeField = document.getElementById("start-time-field");
+                const stopTimeField = document.getElementById("stop-time-field");
+                const batchTimeField = document.getElementById("batch-time-field");
+                const whitingQtyField = document.getElementById("whiting-qty-field");
+                const magadiQtyField = document.getElementById("magadi-qty-field");
+                const tccaQtyField = document.getElementById("tcca-qty-field");
+                const sulphonicQtyField = document.getElementById("sulphonic-qty-field");
+                const limePerQtyField = document.getElementById("lime-per-qty-field");
+                const batchSizeField = document.getElementById("batch-size-field");
+                const pressureField=document.getElementById("pressure");
+        
+                // Function to format time in HH:MM (24-hour format)
+                function formatTime(date) {
+                    const hours = String(date.getHours()).padStart(2, "0");
+                    const minutes = String(date.getMinutes()).padStart(2, "0");
+                    return `${hours}:${minutes}`;
+                }
+        
+                // Event listener for the date field
+                dateField.addEventListener("change", function () {
+                    if (dateField.value) {
+                        // Get the current time
+                        const now = new Date();
+                        const currentHours = now.getHours();
+                        const currentMinutes = now.getMinutes();
+        
+                        // Set start_time to the current time
+                        const startTime = new Date();
+                        startTime.setHours(currentHours);
+                        startTime.setMinutes(currentMinutes);
+        
+                        startTimeField.value = formatTime(startTime);
+        
+                        // Set stop_time to 13 minutes after start_time
+                        const stopTime = new Date(startTime);
+                        stopTime.setMinutes(startTime.getMinutes() + 13);
+                        stopTimeField.value = formatTime(stopTime);
+                    }
+                    // Autofill batch time
+                    batchTimeField.value = 13;
+            
+                    // Autofill other fields
+                    whitingQtyField.value = "1700.00";
+                    magadiQtyField.value = "52.090";
+                    tccaQtyField.value = "7.090";
+                    sulphonicQtyField.value = "37.760";
+                    limePerQtyField.value = "2.156";
+                    batchSizeField.value = "1799.096";
+                    pressure="6.00";
+                    // Autofill batch number prefix
+                    batchNoField.value = "VLE";
+                });
+            });
+        </script>
+        
+
+        <!-- Popper JS -->
+        <script src="{% static 'assets/libs/@popperjs/core/umd/popper.min.js'%}"></script>
+
+        <!-- Bootstrap JS -->
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+        <!-- Defaultmenu JS -->
+        <script src="{% static 'assets/js/defaultmenu.min.js'%}"></script>
+
+        <!-- Node Waves JS-->
+        <script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+
+        <!-- Sticky JS -->
+        <script src="{% static 'assets/js/sticky.js'%}"></script>
+
+        <!-- Simplebar JS -->
+        <script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
+        <script src="{% static 'assets/js/simplebar.js'%}"></script>
+
+        <!-- Color Picker JS -->
+        <script src="{% static 'assets/libs/@simonwep/pickr/pickr.es5.min.js'%}"></script>
+
+
+        <!-- Apex Charts JS -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>
+
+        <!-- Used For Sessions By Device Chart -->
+        <script src="{% static 'assets/libs/moment/moment.js'%}"></script>
+        <!-- Analytics-Dashboard JS -->
+        <script src="{% static 'assets/js/analytics-dashboard.js'%}"></script>
+
+
+        <!-- Custom-Switcher JS -->
+        <script src="{% static 'assets/js/custom-switcher.min.js'%}"></script>
+
+        <!-- Custom JS -->
+        <script src="{% static 'assets/js/custom.js'%}"></script>
+        {%endblock%}
+{%endif%}

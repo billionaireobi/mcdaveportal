@@ -1,0 +1,177 @@
+{% load static %}
+                
+                {%if user.is_authenticated and user.is_staff and user.is_superuser%}
+                {% block content %}
+                <html lang="en" dir="ltr" data-nav-layout="vertical" data-theme-mode="light" data-header-styles="light" data-menu-styles="dark" data-toggled="close">
+
+            <head>
+
+                <!-- Meta Data -->
+                <meta charset="UTF-8">
+                <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <title>VLAVENDERview_record</title>
+                <meta name="Description" content="Bootstrap Responsive Admin Web Dashboard HTML5 Template">
+                <meta name="Author" content="Spruko Technologies Private Limited">
+                <meta name="keywords" content="admin,admin dashboard,admin panel,admin template,bootstrap,clean,dashboard,flat,jquery,modern,responsive,premium admin templates,responsive admin,ui,ui kit.">
+                
+            <!-- Favicon -->
+            <link rel="icon" href="{% static 'assets/images/mcdave/logo.png'%}" type="image/x-icon">
+                
+            <!-- Choices JS -->
+            <script src="{% static 'assets/libs/choices.js/public/assets/scripts/choices.min.js'%}"></script>
+
+            <!-- Main Theme Js -->
+            <script src="{% static 'assets/js/main.js'%}"></script>
+            
+            <!-- Bootstrap Css -->
+            <link id="style" href="{% static 'assets/libs/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet" >
+
+            <!-- Style Css -->
+            <link href="{% static 'assets/css/styles.min.css'%}" rel="stylesheet" >
+
+            <!-- Icons Css -->
+            <link href="{% static 'assets/css/icons.css'%}" rel="stylesheet" >
+
+            <!-- Node Waves Css -->
+            <link href="{% static 'assets/libs/node-waves/waves.min.css'%}" rel="stylesheet" > 
+
+            <!-- Simplebar Css -->
+            <link href="{% static 'assets/libs/simplebar/simplebar.min.css'%}" rel="stylesheet" >
+            
+            <!-- Color Picker Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/flatpickr/flatpickr.min.css'%}">
+            <link rel="stylesheet" href="{% static 'assets/libs/@simonwep/pickr/themes/nano.min.css'%}">
+
+            <!-- Choices Css -->
+            <link rel="stylesheet" href="{% static 'assets/libs/choices.js/public/assets/styles/choices.min.css'%}">
+
+                <div class="row offset-md-3">
+                    <div class="col-xl-6">
+                        <div class="card custom-card mt-4">
+                            <div class="card-header justify-content-between">
+                                <div class="card-title">
+                                    MCDAVE VIM LAVENDER RECORD VIEW 
+                                </div>
+                               </div>
+                        <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                            <p class="form-control"><strong>DATE:</strong> {{ viewrecord.date }}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>#:</strong> {{ viewrecord.hash }}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>BATCH NO:</strong> {{ viewrecord.batch_number}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>START TIME:</strong> {{ viewrecord.start_time}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>STOP TIME:</strong> {{ viewrecord.stop_time}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>BATCH TIME:</strong> {{ viewrecord.batch_time}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>WHITING QTY:</strong> {{ viewrecord.whiting_quantity}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>WHITING BATCH:</strong> {{ viewrecord.whiting_batch_number }}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>MAGADI QTY:</strong> {{ viewrecord.magadi_quantity}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>MAGADI BATCH:</strong> {{ viewrecord.magadi_batch_number}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>TCCA QTY:</strong> {{ viewrecord.tcca_quantity}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>TCCA BATCH:</strong> {{ viewrecord.tcca_batch_number}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>SULPHONIC ACID QTY:</strong> {{ viewrecord.sulphonic_acid_quantity }}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>SULPHONIC ACID BATCH:</strong> {{ viewrecord.sulphonic_acid_batch_number}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>KATIO QTY:</strong> {{ viewrecord.katio_quantity}}</p> 
+                            </div>
+                            <div class="col-md-6">  
+                            <p class="form-control "><strong>KATIO BATCH:</strong> {{ viewrecord.katio_batch_number}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>BATCH SIZE:</strong> {{ viewrecord.batch_size }}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>PRESSURE:</strong> {{ viewrecord.pressure}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>DONE BY:</strong> {{ viewrecord.done_by}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>CHECKED BY:</strong> {{ viewrecord.checked_by}}</p> 
+                            </div>
+                            <div class="col-md-6">
+                            <p class="form-control "><strong>VERIFIED BY:</strong> {{ viewrecord.verified_by}}</p> 
+                            </div>
+                            
+
+                            <div class="col-12">
+                                <a href="{%url 'updaterecordvlavenderke' viewrecord.id%}"class="btn btn-success-light btn-wave">UPDATE RECORD</a>
+                                <a href="{% url 'deleterecordvlavenderke' viewrecord.id %}" class="btn btn-danger-light btn-wave">DELETE</a>
+                                <a href="{%url 'vlavenderke'%}"class="btn btn-info-light btn-wave">BACK</a>
+                            </div>
+                        </div>
+                         </div>  
+                </div>
+            </div>
+        </div>
+        <div class="scrollToTop">
+            <span class="arrow"><i class="ri-arrow-up-s-fill fs-20"></i></span>
+        </div>
+        <div id="responsive-overlay"></div>
+
+        <!-- Popper JS -->
+        <script src="{% static 'assets/libs/@popperjs/core/umd/popper.min.js'%}"></script>
+
+        <!-- Bootstrap JS -->
+        <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+
+        <!-- Defaultmenu JS -->
+        <script src="{% static 'assets/js/defaultmenu.min.js'%}"></script>
+
+        <!-- Node Waves JS-->
+        <script src="{% static 'assets/libs/node-waves/waves.min.js'%}"></script>
+
+        <!-- Sticky JS -->
+        <script src="{% static 'assets/js/sticky.js'%}"></script>
+
+        <!-- Simplebar JS -->
+        <script src="{% static 'assets/libs/simplebar/simplebar.min.js'%}"></script>
+        <script src="{% static 'assets/js/simplebar.js'%}"></script>
+
+        <!-- Color Picker JS -->
+        <script src="{% static 'assets/libs/@simonwep/pickr/pickr.es5.min.js'%}"></script>
+
+
+        <!-- Apex Charts JS -->
+        <script src="{% static 'assets/libs/apexcharts/apexcharts.min.js'%}"></script>
+
+        <!-- Used For Sessions By Device Chart -->
+        <script src="{% static 'assets/libs/moment/moment.js'%}"></script>
+        <!-- Analytics-Dashboard JS -->
+        <script src="{% static 'assets/js/analytics-dashboard.js'%}"></script>
+
+
+        <!-- Custom-Switcher JS -->
+        <script src="{% static 'assets/js/custom-switcher.min.js'%}"></script>
+
+        <!-- Custom JS -->
+        <script src="{% static 'assets/js/custom.js'%}"></script>
+        {%endblock%}
+{%endif%}
