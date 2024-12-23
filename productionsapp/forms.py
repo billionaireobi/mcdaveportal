@@ -1,11 +1,99 @@
 from typing import Any
 from django.utils import timezone
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms 
 from.models import *
-
-
+from django.core.validators import EmailValidator
+import dns.resolver
+from django.core.exceptions import ValidationError
+# update password form
+class UpdatePasswordForm(SetPasswordForm):
+    class Meta:
+        model=User
+        fields=('new_password1','new_password2')
+    
+    def __init__(self, *args, **kwargs):
+        super(UpdatePasswordForm,self).__init__(*args, **kwargs)
+       
+        
+        self.fields["new_password1"].widget.attrs['class']='form-control form-control-lg'
+        self.fields["new_password1"].widget.attrs['placeholder']='password1'
+        self.fields["new_password1"].widget.attrs['autocomplete']='off'
+        self.fields["new_password1"].widget.attrs['id']='signup-password' 
+        self.fields["new_password1"].label='Password'
+        self.fields["new_password1"].help_text=( '<ul class="form-text text-muted small">'
+            '<li>Your password can\'t be too similar to your other personal information.</li>'
+            '<li>Your password must contain at least 8 characters.</li>'
+            '<li>Your password can\'t be a commonly used password.</li>'
+            '<li>Your password can\'t be entirely numeric.</li>'
+            '</ul>')
+        
+        self.fields["new_password2"].widget.attrs['class']='form-control form-control-lg'
+        self.fields["new_password2"].widget.attrs['placeholder']='confirm password'
+        self.fields["new_password2"].widget.attrs['autocomplete']='off'
+        self.fields["new_password2"].widget.attrs['id']='signup-confirmpassword'
+        self.fields["new_password2"].label='Confirm Password'
+        self.fields["new_password2"].help_text=('<span class="form-text text-muted">'
+            '<small>Enter the same password as before for verification.</small>'
+            '</span>')
+    
+# update profile form
+class UpdateUserForm(UserChangeForm):
+    # hide password field
+    password=None
+    # rest of the fields
+    first_name=forms.CharField(
+        label="First Name",
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control form-control-lg',
+                                                                    'placeholder':'First Name',
+                                                                    'autocomplete':'off',
+                                                                    'id':'update-firstname'}))
+    last_name=forms.CharField(
+        label="Last Name", 
+        max_length=100,
+        widget=forms.TextInput(attrs={'class':'form-control form-control-lg',
+                                                                        'placeholder':'Last Name',
+                                                                        'autocomplete':'off',
+                                                                        'id':'update-lastname'}))
+    email=forms.EmailField(
+        label="Email",
+        widget=forms.TextInput(attrs={'class':'form-control form-control-lg',
+                                                                  'placeholder':'Email',
+                                                                  'autocomplete':'off',
+                                                                  'id':'update-lastname'}))
+    class Meta:
+        model=User
+        fields=('username','first_name','last_name','email')
+    
+    def __init__(self, *args, **kwargs):
+        super(UpdateUserForm,self).__init__(*args, **kwargs)
+        self.fields["username"].widget.attrs['class']='form-control form-control-lg'
+        self.fields["username"].widget.attrs['placeholder']='User Name'
+        self.fields["username"].widget.attrs['autocomplete']='off'
+        self.fields["username"].widget.attrs['id']='update-lastname'
+        self.fields["username"].label='User Name'
+        self.fields["username"].help_text =(
+            '<span class="form-text text-muted">'
+            '<small>Required. 150 characters or fewer. Only letters, digits, and @/./+/-/_ allowed.</small>'
+            '</span>')
+        
+        self.fields["email"].widget.attrs['class']='form-control form-control-lg'
+        self.fields["email"].widget.attrs['placeholder']='Email'
+        self.fields["email"].widget.attrs['autocomplete']='off'
+        self.fields["email"].widget.attrs['id']='update-email'
+        self.fields["email"].label='Email'
+        self.fields["email"].help_text =(
+            '<span class="form-text text-muted">'
+            '<small>Required. 150 characters or fewer. Only letters, digits, and @/./+/-/_ allowed.</small>'
+            '</span>')
+        
+        self.fields["first_name"].widget.attrs['class']='form-control form-control-lg'
+        self.fields["first_name"].widget.attrs['placeholder']='First Name'
+        self.fields["first_name"].widget.attrs['autocomplete']='off'
+        self
+    
 # registeruser form
 class SignUpForm(UserCreationForm):
     first_name=forms.CharField(
@@ -23,6 +111,7 @@ class SignUpForm(UserCreationForm):
                                                                         'autocomplete':'off',
                                                                         'id':'signup-lastname'}))
     email=forms.EmailField(
+        required=True,
         label="Email",
         widget=forms.TextInput(attrs={'class':'form-control form-control-lg',
                                                                   'placeholder':'Email',
@@ -31,6 +120,25 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model=User
         fields=('username','first_name','last_name','email','password1','password2')
+    # user cannot signup with the same email
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        domain = email.split('@')[1]
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("An Account With That Email Already Exists!!")
+        
+        # Validate email format
+        try:
+            validator = EmailValidator()
+            validator(email)
+        except ValidationError:
+            raise ValidationError("Invalid email format.")
+        # Check if domain has valid MX record
+        try:
+            dns.resolver.resolve(domain, 'MX')
+        except Exception:
+            raise ValidationError("Invalid email domain. Please use a valid email address.")
+        return email
     
     def __init__(self, *args, **kwargs):
         super(SignUpForm,self).__init__(*args, **kwargs)

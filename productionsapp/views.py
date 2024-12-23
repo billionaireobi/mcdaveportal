@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import login,logout,authenticate,get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .forms import *
@@ -8,6 +8,14 @@ from django.db.models.functions import Cast, TruncMonth, TruncDay, TruncHour
 from datetime import datetime
 from django.http import JsonResponse
 from .models import*
+from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from .tokens import Account_Activation_Token
+from django.core.mail import EmailMessage
+from django.urls import reverse
+
 
 # Create your views here.
 def index(request):
@@ -32,23 +40,107 @@ def sign_out_user(request):
     logout(request)
     messages.success(request,"you logged out")
     return redirect('sign-in')
-
-def sign_up_user(request):
-    if request.method=='POST':
-       form=SignUpForm(request.POST) 
-       if form.is_valid():
-            form.save()
-            # authenticate and log in
-            username=form.cleaned_data['username']
-            password=form.cleaned_data['password1']
-            user=authenticate(username=username,password=password)
-            login(request,user)
-            messages.success(request,'you have succesfully registered')
-            return redirect('sign-in')
+# account verification and email verification
+# text for verify
+# def intext(request):
+#     messages_to_display = messages.get_messages(request)
+#     return render(request, "authentication/intext.html", {"messages":messages_to_display})
+# registration view
+def activate_user(request, uidb64, token):
+    user = get_user_model()
+    try:
+        uid=force_str(urlsafe_base64_decode(uidb64))
+        user = user.objects.get(pk=uid)
+    except(TypeError, ValueError, OverflowError,User.DoesNotExist):
+        user=None
+    
+    if user is not None and Account_Activation_Token.check_token(user, token):
+        user.is_active = True
+        user.save()
+        # login(request,user)
+        messages.success(request,'Your Account Has Been Succcessfully Activated!')
+        return redirect(reverse('sign-in'))
     else:
-        form=SignUpForm()
-        return render(request,'authentication/signin.html',{'form':form})
-    return render(request,'authentication/signin.html',{'form':form})
+        messages.error(request,'Activation link is invalid or expired')
+    return redirect('sign-up')
+    # ////////break
+def activateEmail(request,user,to_email):
+    mail_subject = "Activate Your Account."
+    message = render_to_string("authentication/account_activation_email.html",{
+                    "user": user.username,
+                    "domain": get_current_site(request).domain, 
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "token": Account_Activation_Token.make_token(user),
+                    "protocol": 'https' if request.is_secure() else 'http'
+    })
+    email = EmailMessage(mail_subject, message, to=[to_email])
+    if email.send():
+        messages.success(request,f'Dear <b>{user.username}</b>, please go to your email <b>{to_email}</b> inbox and click on received activation link toconfirm and complete the registration.<b>Note:<b>Checkyour spam folder.')
+    else:
+        messages.error(request,f'Problem sending email to {to_email} check if you typed it correctly')
+    
+def sign_up_user(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            try:
+                user = form.save(commit=False)
+                user.is_active = False
+                user.save()
+                activateEmail(request,user, form.cleaned_data.get("email"))
+                return redirect('sign-in')
+            except Exception as e:
+                messages.error(request, f"Error during registration: {str(e)}")
+                user.delete()  # Clean up if email sending fails
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request,error)
+    else:
+        form= SignUpForm()
+    return render(request, "authentication/signin.html", {"form":form})
+            
+            
+# update user profile
+@login_required(login_url='/sign-in/')
+def update_user_profile(request):
+    # Add your logic here
+    if request.user.is_authenticated:
+        current_user=User.objects.get(id=request.user.id)
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+        if user_form.is_valid():
+            user_form.save()
+            login(request, current_user)
+            messages.success(request, "profile updated successfully")
+            return redirect("home")
+        return render(request, "authentication/updateprofile.html", {"user_form": user_form})
+    else:
+        messages.success(request, "you must be logged in")
+        return redirect("sign-in")
+# update password
+@login_required(login_url='/sign-in/')
+def update_password(request):
+    if request.user.is_authenticated:
+        current_user=request.user
+        # did he/she fill the form
+        if request.method == "POST":
+            user_form=UpdatePasswordForm(current_user,request.POST)
+            if user_form.is_valid():
+                user_form.save()
+                
+                messages.success(request,"Password updated successfully")
+                login(request, current_user)
+                return redirect("home")
+            else:
+                return render(request, "authentication/updatepassword.html", {"user_form": user_form})
+                # for error in list(user_form.errors.values()):
+                #     messages.error(request,error)
+                #     return redirect("update_password")
+        else:
+            user_form=UpdatePasswordForm(current_user)
+            return render(request,"authentication/updatepassword.html",{"user_form":user_form})
+    else:
+        messages.success(request,"You must be logged in")
+        return redirect("sign-in")
 # analytics dashboard
 
 @login_required(login_url='/sign-in/')   

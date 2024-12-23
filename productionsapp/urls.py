@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,include
 from . import views
 
 
@@ -7,7 +7,12 @@ urlpatterns = [
     path("",views.index,name=""),
     path('sign-in/', views.sign_in_user, name='sign-in'),
     path('sign-out/',views.sign_out_user,name='sign-out'),
+    # path('intext/', views.intext, name='intext'),
+    path('activate/<uidb64>/<token>/', views.activate_user, name='activate'),
     path('sign-up/',views.sign_up_user,name='sign-up'),
+    # path("accounts/",include("django.contrib.auth.urls")),
+    path('update_user/',views.update_user_profile,name='update_user'),
+    path('update_password/',views.update_password,name='update_password'),
     path('home/',views.home_page,name='home'),
     # charts urls
     path('get_monthly_production_data/', views.get_monthly_production_data, name='get_monthly_production_data'),

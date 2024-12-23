@@ -92,7 +92,10 @@
                                 </div>
                             </div>
                             <div class="col-xl-12 d-grid mt-2">
-                                <button type="submit"class="btn btn-lg btn-primary">Sign In</button>
+                                <button type="submit" class="btn btn-lg btn-primary" id="submit-button">
+                                    <span class="spinner-border spinner-border-sm d-none" id="loading-spinner" role="status" aria-hidden="true"></span>
+                                    <span id="button-text">Signin</span>
+                                </button>
                             </div>
                             
                         </div>
@@ -106,7 +109,27 @@
             </div>
         </div>
     </div>
-
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.querySelector("form");
+            const submitButton = document.getElementById("submit-button");
+            const spinner = document.getElementById("loading-spinner");
+            const buttonText = document.getElementById("button-text");
+    
+            form.addEventListener("submit", function () {
+                // Show the spinner
+                spinner.classList.remove("d-none");
+    
+                // Update button text to "Registering"
+                buttonText.textContent = "Logging in...";
+    
+                // Disable the button to prevent multiple submissions
+                submitButton.disabled = true;
+            });
+        });
+    </script>
+    
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- Custom-Switcher JS -->
     <script src="{% static 'assets/js/custom-switcher.min.js'%}"></script>

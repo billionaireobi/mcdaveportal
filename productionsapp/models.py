@@ -1,7 +1,28 @@
 from django.db import models
 from django.utils import timezone 
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save 
 
 # Create your models here.
+# creating user profile model
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    date_modiefied=models.DateTimeField(user, auto_now=True)
+    phone=models.CharField(max_length=20, blank=True, null=True)
+    department=models.CharField(max_length=50, blank=True, null=True)
+    
+    def __str__(self):
+        return self.user.username
+    
+# create a user by default
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        User_Profile=UserProfile(user=instance)
+        User_Profile.save()
+        #automate the creation of user profile 
+post_save.connect(create_profile, sender=User)
+        
+        
     # crqs model
 class CRQSData(models.Model):
     date= models.DateTimeField(default=timezone.now)
