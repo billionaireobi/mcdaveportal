@@ -41,10 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'productionsapp',
-    'widget_tweaks',
+    'crispy_forms',
+    'crispy_bootstrap5',
     'adminstration'
     
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'  # or 'bootstrap5' if you use Bootstrap 5
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -142,7 +148,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER ='eugineosoroobiero@gmail.com' 
 EMAIL_HOST_PASSWORD = 'qmxrqiipuffvqaip'
 
-PASSWORD_RESET_TIMEOUT = 3600
+PASSWORD_RESET_TIMEOUT = 300
 
 
 LOGIN_REDIRECT_URL= "/"
