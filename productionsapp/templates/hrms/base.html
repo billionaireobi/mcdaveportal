@@ -1,0 +1,124 @@
+{% load static %}
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <title>mcdave-hrms</title>
+        <meta content="Admin Dashboard" name="description" />
+        <meta content="Mannatthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <link rel="shortcut icon" href="{% static 'assets copy/images/favicon.ico'%}">
+
+        <!--Morris Chart CSS -->
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/fullcalendar/vanillaCalendar.css'%}"/>
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/jvectormap/jquery-jvectormap-2.0.2.css'%}">
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/chartist/css/chartist.min.css'%}">
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/morris/morris.css'%}">
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/metro/MetroJs.min.css'%}">
+
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/carousel/owl.carousel.min.css'%}">
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/carousel/owl.theme.default.min.css'%}">
+
+        <link rel="stylesheet" href="{% static 'assets copy/plugins/animate/animate.css'%}" type="text/css">
+        <link rel="stylesheet" href="{% static 'assets copy/css/bootstrap-material-design.min.css'%}" type="text/css">
+        <link rel="stylesheet" href="{% static 'assets copy/css/icons.css'%}" type="text/css">
+        <link rel="stylesheet" href="{% static 'assets copy/css/style.css'%}" type="text/css">
+
+        {% comment %} toast css {% endcomment %}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crjUZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+                
+    </head>
+
+
+    <body class="fixed-left">
+
+        <!-- Loader -->
+        <div id="preloader">
+            <div id="status">
+                <div class="spinner"></div>
+            </div>
+        </div>
+
+        <!-- Begin page -->
+        <div id="wrapper">
+            {%include "hrms/sidebar.html"%}
+
+            <div class="content-page">
+                <!-- Start content -->
+                <div class="content">
+                    {%include "hrms/topbar.html"%} 
+                    <div class="page-content-wrapper dashborad-v">
+                        {% comment %} breadcrumb {% endcomment %}
+                        <div class="container-fluid">
+                             {% comment %} endbreadcramb {% endcomment %}
+                             {% if messages %}
+                             <script>
+                                 document.addEventListener('DOMContentLoaded', function () {
+                                     {% for message in messages %}
+                                     iziToast.success({
+                                         title: 'Success:',
+                                         animateInside: true,
+                                         message: "{{ message|escapejs }}",
+                                         position: 'topRight',
+                                     });
+                                     {% endfor %}
+                                 });
+                             </script>
+                             {% endif %}
+                             {% comment %} endizitoast {% endcomment %}
+                              {%block content%}
+
+                              {%endblock%}
+                            </div>
+                            <!-- container -->
+    
+                        </div>
+                        <!-- Page content Wrapper -->
+                    </div>
+                    <!-- content -->
+                    {%include "partials/footer.html"%}
+    
+                </div>
+                <!-- End Right content here -->
+    
+            </div>
+            <!-- END wrapper -->
+    
+    {% comment %} toasts {% endcomment %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+            <!-- jQuery  -->
+            <script src="{% static 'assets copy/js/jquery.min.js'%}"></script>
+            <script src="{% static 'assets copy/js/popper.min.js'%}"></script>
+            <script src="{% static 'assets copy/js/bootstrap-material-design.js'%}"></script>
+            <script src="{% static 'assets copy/js/modernizr.min.js'%}"></script>
+            <script src="{% static 'assets copy/js/detect.js'%}"></script>
+            <script src="{% static 'assets copy/js/fastclick.js'%}"></script>
+            <script src="{% static 'assets copy/js/jquery.slimscroll.js'%}"></script>
+            <script src="{% static 'assets copy/js/jquery.blockUI.js'%}"></script>
+            <script src="{% static 'assets copy/js/waves.js'%}"></script>
+            <script src="{% static 'assets copy/js/jquery.nicescroll.js'%}"></script>
+            <script src="{% static 'assets copy/js/jquery.scrollTo.min.js'%}"></script>
+    
+    
+            <script src="{% static 'assets copy/plugins/carousel/owl.carousel.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/fullcalendar/vanillaCalendar.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/peity/jquery.peity.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/jvectormap/jquery-jvectormap-2.0.2.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/jvectormap/jquery-jvectormap-world-mill-en.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/chartist/js/chartist.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/chartist/js/chartist-plugin-tooltip.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/metro/MetroJs.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/raphael/raphael.min.js'%}"></script>
+            <script src="{% static 'assets copy/plugins/morris/morris.min.js'%}"></script>
+            <script src="{% static 'assets copy/pages/dashborad.js'%}"></script>
+    
+            <!-- App js -->
+            <script src="{% static 'assets copy/js/app.js'%}"></script>
+           
+        </body>
+    
+    </html>

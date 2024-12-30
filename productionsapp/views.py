@@ -40,11 +40,6 @@ def sign_out_user(request):
     logout(request)
     messages.success(request,"you logged out")
     return redirect('sign-in')
-# account verification and email verification
-# text for verify
-# def intext(request):
-#     messages_to_display = messages.get_messages(request)
-#     return render(request, "authentication/intext.html", {"messages":messages_to_display})
 # registration view
 def activate_user(request, uidb64, token):
     user = get_user_model()
@@ -58,7 +53,7 @@ def activate_user(request, uidb64, token):
         user.is_active = True
         user.save()
         # login(request,user)
-        messages.success(request,'Your Account Has Been Succcessfully Activated!')
+        messages.success(request,'Account Activated! Please Remember To Update User Profile')
         return redirect(reverse('sign-in'))
     else:
         messages.error(request,'Activation link is invalid or expired')
@@ -101,6 +96,22 @@ def sign_up_user(request):
             
             
 # update user profile
+@login_required(login_url='/sign-in/')
+def update_info_profile(request):
+     # Add your logic here
+    if request.user.is_authenticated:
+        current_user=UserProfile.objects.get(user__id=request.user.id)
+        form = UserInfoForm(request.POST or None, instance=current_user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your Info Has Been Updated Successfully")
+            return redirect("home")
+        return render(request, "authentication/update_info.html", {"form": form})
+    else:
+        messages.success(request, "you must be logged in")
+        return redirect("sign-in")
+    
+    
 @login_required(login_url='/sign-in/')
 def update_user_profile(request):
     # Add your logic here

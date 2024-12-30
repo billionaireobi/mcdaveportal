@@ -10,19 +10,21 @@ urlpatterns = [
     path('sign-out/',views.sign_out_user,name='sign-out'),
     # djangos default authentication urls
     path('accounts/', include('django.contrib.auth.urls')),
-    # password reset urls
-    path('passwordreset/', auth_views.PasswordResetView.as_view(
-    template_name='authentication/password_reset_form.html',
-    success_url=reverse_lazy('passwordreset_done')
-    ), name='passwordreset'),
-    path('passwordreset_done/', auth_views.PasswordResetDoneView.as_view(template_name='authentication/passwordreset_done.html'), name='passwordreset_done'),
-    path('passwordreset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='authentication/passwordreset_confirm.html'), name='password_reset_confirm'),
-    path('passwordreset_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='authentication/passwordreset_complete.html'), name='password_reset_complete'),
-    # email activation urls
+    # # password reset urls
+    
+    # path('passwordreset/', auth_views.PasswordResetView.as_view(
+    # template_name='authentication/password_reset_form.html',
+    # success_url=reverse_lazy('passwordreset_done')
+    # ), name='passwordreset'),
+    # path('passwordreset_done/', auth_views.PasswordResetDoneView.as_view(template_name='authentication/passwordreset_done.html'), name='passwordreset_done'),
+    # path('passwordreset_confirm/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='authentication/passwordreset_confirm.html'), name='password_reset_confirm'),
+    # path('passwordreset_complete/', auth_views.PasswordResetCompleteView.as_view(template_name='authentication/passwordreset_complete.html'), name='password_reset_complete'),
+    # # email activation urls
     path('activate/<uidb64>/<token>/', views.activate_user, name='activate'),
     path('sign-up/',views.sign_up_user,name='sign-up'),
     # update profile urls
     # path("accounts/",include("django.contrib.auth.urls")),
+    path('update_info/',views.update_info_profile,name='update_info'),
     path('update_user/',views.update_user_profile,name='update_user'),
     path('update_password/',views.update_password,name='update_password'),
     # homepage urls

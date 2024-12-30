@@ -1,0 +1,54 @@
+{% load static %}
+<!-- ========== Left Sidebar Start ========== -->
+<div class="left side-menu">
+    <button type="button" class="button-menu-mobile button-menu-mobile-topbar open-left waves-effect">
+        <i class="mdi mdi-close"></i>
+    </button>
+
+    <!-- LOGO -->
+    <div class="topbar-left">
+        <div class="text-center">
+            <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+            <style>
+                #logo {
+                    width: 80px;  /* Adjusted width */
+                    height: auto;  /* Keeps the aspect ratio intact */
+                }
+            </style>
+            <!--<a href="index.html" class="logo"><i class="mdi mdi-assistant"></i> Urora</a>-->
+            <a href="{% url "hrms"%}" class="logo">
+                <img src="{% static 'assets/images/mcdave/logo.png'%}" id="logo" alt="" class="logo-large">
+            </a>
+        </div>
+        </div>
+    </div>
+
+    <div class="sidebar-inner slimscrollleft" id="sidebar-main">
+
+        <div id="sidebar-menu">
+            <ul>
+                <li class="menu-title">Main</li>
+
+                <li>
+                    <a href="{% url "hrms"%}" class="waves-effect">
+                        <i class="mdi mdi-view-dashboard"></i>
+                        <span> Dashboard
+                            <span class="badge badge-pill badge-primary float-right">7</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url "calendar"%}" class="waves-effect">
+                        <i class="mdi mdi-calendar-clock"></i>
+                        <span> Calendar </span>
+                    </a>
+                </li>
+                <li class="menu-title">Components</li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <!-- end sidebarinner -->
+</div>
+<!-- Left Sidebar End -->

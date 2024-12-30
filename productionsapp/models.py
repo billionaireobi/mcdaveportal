@@ -10,19 +10,22 @@ class UserProfile(models.Model):
     date_modiefied=models.DateTimeField(user, auto_now=True)
     phone=models.CharField(max_length=20, blank=True, null=True)
     department=models.CharField(max_length=50, blank=True, null=True)
+    national_id=models.CharField(max_length=20, blank=True, null=True)
+    join_date=models.DateField(blank=True, null=True)
+    
     
     def __str__(self):
         return self.user.username
     
-# create a user by default
+# create a user profile  by default when user signs up
 def create_profile(sender, instance, created, **kwargs):
     if created:
         User_Profile=UserProfile(user=instance)
         User_Profile.save()
-        #automate the creation of user profile 
+#automate the creation of user profile 
 post_save.connect(create_profile, sender=User)
         
-        
+    
     # crqs model
 class CRQSData(models.Model):
     date= models.DateTimeField(default=timezone.now)

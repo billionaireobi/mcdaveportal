@@ -27,8 +27,8 @@ SECRET_KEY = 'django-insecure-9+y*gg2^3tm@%u)u^*$4a%640htey9q5kko4=hg-1ifpe_)g+@
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['.vercel.app']
+# '.vercel.app'
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -92,7 +92,16 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'mcdaveholdings',
+#         'USER': 'postgres',
+#         'PASSWORD': 'eugine@123',
+#         'PORT': '5433',
+#         'HOST': 'localhost'
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -129,7 +138,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS=[BASE_DIR/ 'static']
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build','static')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -143,12 +154,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND ='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_FROM= 'eugineosoroobiero@gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
 EMAIL_HOST_USER ='eugineosoroobiero@gmail.com' 
 EMAIL_HOST_PASSWORD = 'qmxrqiipuffvqaip'
 
-PASSWORD_RESET_TIMEOUT = 300
+PASSWORD_RESET_TIMEOUT = 600
 
 
 LOGIN_REDIRECT_URL= "/"

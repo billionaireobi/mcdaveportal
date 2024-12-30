@@ -37,7 +37,17 @@ class UpdatePasswordForm(SetPasswordForm):
         self.fields["new_password2"].help_text=('<span class="form-text text-muted">'
             '<small>Enter the same password as before for verification.</small>'
             '</span>')
+#user info form
+class UserInfoForm(forms.ModelForm):
+    phone = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Phone','autocomplete':'off','id':'phone'}), required=False)
+    department = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'Department','autocomplete':'off','id':'department'}),required=True)
+    national_id = forms.CharField(label="",widget=forms.TextInput(attrs={'class':'form-control form-control-lg','placeholder':'ID','autocomplete':'off','id':'id'}),required=True)
+    join_date = forms.DateField(label="",widget=forms.DateInput(attrs={'class':'form-control form-control-lg','placeholder':'Join Date','autocomplete':'off','id':'join_date'}),required=True)
     
+    class Meta:
+        model=UserProfile
+        fields=('phone','department',"id","join_date")
+     
 # update profile form
 class UpdateUserForm(UserChangeForm):
     # hide password field
@@ -124,20 +134,28 @@ class SignUpForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
         domain = email.split('@')[1]
+
+        # Check if email is already registered
         if User.objects.filter(email=email).exists():
-            raise ValidationError("An Account With That Email Already Exists!!")
-        
+            raise ValidationError("An account with this email already exists!")
+
         # Validate email format
         try:
             validator = EmailValidator()
             validator(email)
         except ValidationError:
             raise ValidationError("Invalid email format.")
-        # Check if domain has valid MX record
+
+        # Check if domain has a valid MX record
         try:
-            dns.resolver.resolve(domain, 'MX')
-        except Exception:
+            mx_records = dns.resolver.resolve(domain, 'MX')
+            if not mx_records:
+                raise ValidationError("Invalid email domain. Please use a valid email address.")
+        except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
             raise ValidationError("Invalid email domain. Please use a valid email address.")
+        except Exception as e:
+            raise ValidationError(f"An error occurred while verifying the email domain: {e}")
+
         return email
     
     def __init__(self, *args, **kwargs):
