@@ -1,0 +1,138 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Reset</title>
+    <link rel="icon" href="{% static 'assets/images/brand-logos/favicon.ico' %}" type="image/x-icon">
+    <link href="{% static 'assets/libs/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/css/icons.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.8s ease-in-out;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .sad-face {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #ff6a00;
+            margin: 0 auto 20px auto;
+            position: relative;
+            animation: bounce 2s infinite;
+        }
+
+        .sad-face::before,
+        .sad-face::after {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 30%;
+        }
+
+        .sad-face::before {
+            left: 25%;
+        }
+
+        .sad-face::after {
+            right: 25%;
+        }
+
+        .sad-face .mouth {
+            width: 40px;
+            height: 20px;
+            border: 3px solid #fff;
+            border-top: none;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff6a00, #ee0979);
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            color: #fff;
+            padding: 12px 20px;
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ee0979, #ff6a00);
+            box-shadow: 0 4px 15px rgba(255, 106, 0, 0.3);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5">
+                <div class="card">
+                    <div class="sad-face">
+                        <div class="mouth"></div>
+                    </div>
+                    <h2>Link Expired</h2>
+                    <p>The password reset link has expired or is invalid. Please request a new one.</p>
+                    <div class="d-grid">
+                        <a href="{% url 'forgetpassword' %}" class="btn btn-primary">Request New Link</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'assets/libs/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+</body>
+
+</html>

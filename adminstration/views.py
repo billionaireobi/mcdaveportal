@@ -16,15 +16,15 @@ def log_in_user(request):
         username=request.POST['username']
         password=request.POST['password']
         user=authenticate(request,username=username,password=password)
-        if user is not None:
+        if user is not None and user == request.user:
             login(request,user)
             messages.success(request,"Login successful! Welcome back.")
             return redirect('hrms')
         else:
             messages.error(request,"Invalid username or password. Please try again.")
             return redirect('log-in')
-    else:
-        return render(request,"hrms/authenticate/login.html")
+    
+    return render(request,"hrms/authenticate/login.html")
 
 def logout_view(request):
     logout(request)
@@ -68,20 +68,24 @@ def passwordresetsent(request,reset_id):
         messages.error(request, 'Invalid reset Id')
         return redirect('forgetpassword')
 
+
 def resetpassword(request, reset_id):
     try:
         password_reset = passwordreset.objects.get(reset_id=reset_id)
-        
+        current_time = timezone.now()
         # Check for link expired
-        expiration_time = password_reset.created_when + timezone.timedelta(minutes=10)
-            
-        if timezone.now() > expiration_time:
+        # expiration_time = password_reset.created_when + timezone.timedelta(minutes=10)
+        expiration_time = password_reset.created_when + timezone.timedelta(minutes=10)   
+        if current_time > expiration_time:
+            # print(f"Link expired at: {expiration_time}") 
             passwords_have_error = True
             messages.error(request, "Reset Link Has Expired")
             # Delete reset id if expired
+            
             password_reset.delete()
+            # return render(request, 'authentication/link_expired.html')
             return redirect('sign-in')
-        
+            
         if request.method == 'POST':
             password = request.POST.get('password')
             confirmpassword = request.POST.get('confirm_password')
@@ -113,8 +117,8 @@ def resetpassword(request, reset_id):
         })
             
     except passwordreset.DoesNotExist:
-        messages.error(request, 'Invalid Reset Link Please get another!!')
-        return redirect('forgetpassword')
+        # messages.error(request, 'Invalid Reset Link Please get another!!')
+        return render(request, 'authentication/link_expired.html')
 @login_required(login_url='/log-in/')  
 def hrms_page(request):
     return render(request, "hrms/dashboards/index.html")

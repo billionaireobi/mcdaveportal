@@ -1,157 +1,241 @@
-{% load static %}
+{% load static%}
 <html lang="en">
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <title>Urora - Responsive Bootstrap 4 Admin Dashboard</title>
-        <meta content="Admin Dashboard" name="description" />
-        <meta content="Mannatthemes" name="author" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>McDave HRMS</title>
 
-        <link rel="shortcut icon" href="{% static 'assets copy/images/favicon.ico'%}">
+        <!-- iziToast CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" />
 
-        <link href="{% static 'assets copy/plugins/animate/animate.css'%}" rel="stylesheet" type="text/css">
-        <link href="{% static 'assets copy/css/bootstrap-material-design.min.css'%}" rel="stylesheet" type="text/css">
-        <link href="{% static 'assets copy/css/icons.css'%}" rel="stylesheet" type="text/css">
-        <link href="{% static 'assets copy/css/style.css'%}" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.css" integrity="sha512-DIW4FkYTOxjCqRt7oS9BFO+nVOwDL4bzukDyDtMO7crjUZhwpyrWBFroq+IqRe6VnJkTpRAS6nhDvf0w+wHmxg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Arial', sans-serif;
+                background: linear-gradient(to bottom right, #0d47a1, #42a5f5);
+                color: #fff;
+                height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
 
+            .wrapper-page {
+                width: 90%;
+                max-width: 1200px;
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                background: rgba(255, 255, 255, 0.15);
+                border-radius: 15px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                padding: 2rem;
+            }
+
+            .image-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .image-container img {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .card {
+                background: rgba(255, 255, 255, 0.2);
+                padding: 2rem;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+                color: #fff;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            }
+
+            .card .logo {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 1.5rem;
+            }
+
+            .card .logo img {
+                width: 70px;
+                height: auto;
+            }
+
+            .alert {
+                background: #29b6f6;
+                color: #fff;
+                padding: 1rem;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-control {
+                width: 100%;
+                padding: 0.8rem;
+                border-radius: 10px;
+                border: none;
+                background: rgba(255, 255, 255, 0.7);
+                font-size: 1rem;
+                color: #000;
+            }
+
+            .form-control::placeholder {
+                color: #757575;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 0.8rem;
+                background: #1e88e5;
+                color: #fff;
+                border: none;
+                border-radius: 10px;
+                font-size: 1rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            .btn:hover {
+                background: #1565c0;
+            }
+
+            .link-group {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                margin-top: 1rem;
+                gap: 0.5rem;
+            }
+
+            .link-group a {
+                color: #ffeb3b;
+                text-decoration: none;
+                font-size: 0.9rem;
+            }
+
+            .link-group a:hover {
+                text-decoration: underline;
+            }
+
+            /* Media Queries */
+            @media (min-width: 768px) {
+                .wrapper-page {
+                    grid-template-columns: 1fr 1fr;
+                }
+
+                .card {
+                    padding: 2.5rem;
+                }
+
+                .form-control {
+                    font-size: 1.1rem;
+                }
+
+                .btn {
+                    font-size: 1.1rem;
+                }
+            }
+
+            @media (min-width: 1200px) {
+                .wrapper-page {
+                    padding: 3rem;
+                }
+
+                .image-container img {
+                    max-width: 400px;
+                }
+            }
+        </style>
     </head>
+
     <body>
-
-
-    <!-- Begin page -->
-    <div class="accountbg"></div>
-    <div class="wrapper-page">
-        <div class="display-table">
-            <div class="display-table-cell">
-                <diV class="container">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <img src="{% static 'assets copy/images/extra.png'%}" alt="" class="img-fluid">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card">
-
-                                <div class="card-body">
-                                    {% if messages %}
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                {% for message in messages %}
-                                {% if message.tags == "success" %}
-                                iziToast.success({
-                                    title: 'Success:',
-                                    message: "{{ message|escapejs }}",
-                                    position: 'topCenter',
-                                });
-                                {% elif message.tags == "error" %}
-                                iziToast.error({
-                                    title: 'Error:',
-                                    message: "{{ message|escapejs }}",
-                                    position: 'topCenter',
-                                });
-                                {% endif %}
-                                {% endfor %}
-                            });
-                        </script>
+        <div class="wrapper-page">
+            <div class="image-container">
+                <img src="{% static 'assets copy/images/extra.png' %}" alt="McDave">
+            </div>
+            <div class="card">
+                <div class="logo">
+                    <a href="{% url 'sign-in' %}">
+                        <img src="{% static 'assets/images/mcdave/logo.png' %}" alt="logo">
+                    </a>
+                </div>
+                {% if messages %}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        {% for message in messages %}
+                        {% if message.tags == "success" %}
+                        iziToast.success({
+                            title: 'Success:',
+                            message: "{{ message|escapejs }}",
+                            position: 'topCenter',
+                        });
+                        {% elif message.tags == "error" %}
+                        iziToast.error({
+                            title: 'Error:',
+                            message: "{{ message|escapejs }}",
+                            position: 'topCenter',
+                        });
                         {% endif %}
-                                    <div class="text-center pt-3">
-                                        <a href="{% url "home"%}">
-                                            <img src="{% static 'assets/images/mcdave/logo.png'%}" alt="logo" height="22" />
-                                        </a>
-                                    </div>
-                                    <div class="px-3 pb-3">
-                                        <form class="form-horizontal m-t-20 mb-0" method="POST"action="{% url 'log-in'%}"autocomplete="off">
-                                                    {%csrf_token%}
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <input class="form-control" type="text"name="username" required="True" placeholder="Username">
-                                                </div>
-                                            </div>
-                    
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <input class="form-control" type="password"name="password" required="True" placeholder="Password">
-                                                </div>
-                                            </div>
-                    
-                                            <div class="form-group row">
-                                                <div class="col-12">
-                                                    <div class="custom-control custom-checkbox">
-                                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                        <label class="custom-control-label" for="customCheck1">Remember me</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                    
-                                            <div class="form-group text-right row m-t-20">
-                                                <div class="col-12">
-                                                    <button class="btn btn-primary btn-raised btn-block waves-effect waves-light" type="submit" id="submit-button">
-                                                        <span class="spinner-border spinner-border-sm d-none" id="loading-spinner" role="status" aria-hidden="true"></span>
-                                                        <span id="button-text">Log in</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="form-group m-t-10 mb-0 row">
-                                                <div class="col-sm-7 m-t-20">
-                                                    <a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password ?</a>
-                                                </div>
-                                                <div class="col-sm-5 m-t-20">
-                                                    <a href="pages-register.html" class="text-muted"><i class="mdi mdi-account-circle"></i> Create an account ?</a>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                    
-                                </div>
-                            </div>
+                        {% endfor %}
+                    });
+                </script>
+                {% endif %}
+                <div class="alert">
+                    Enter <b>Details</b>of the logged in User!
+                </div>
+                <form class="form-horizontal" method="POST" action="{% url 'log-in' %}" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input class="form-control" type="text"name="username" required="True" placeholder="Username">
                         </div>
-                       
                     </div>
-                </diV>
+                    <div class="form-group row">
+                        <div class="col-12">
+                            <input class="form-control" type="password"name="password" required="True" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn" type="submit" id="submit-button">
+                            <span class="spinner-border spinner-border-sm d-none" id="loading-spinner" role="status" aria-hidden="true"></span>
+                            <span id="button-text">Login</span>
+                        </button>
+                    </div>
+                </form>
+                <div class="link-group">
+                    <a href="{% url 'home' %}"><i class="mdi mdi-lock"></i>Home</a>
+                    <a href="{% url 'forgetpassword' %}"><i class="mdi mdi-account-circle"></i>Forgot password</a>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.querySelector("form");
-            const submitButton = document.getElementById("submit-button");
-            const spinner = document.getElementById("loading-spinner");
-            const buttonText = document.getElementById("button-text");
-    
-            form.addEventListener("submit", function () {
-                // Show the spinner
-                spinner.classList.remove("d-none");
-    
-                // Update button text to "Registering"
-                buttonText.textContent = "Searching...";
-    
-                // Disable the button to prevent multiple submissions
-                submitButton.disabled = true;
-            });
-        });
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    
-
-        <!-- jQuery  -->
-        <script src="{% static 'assets copy/js/jquery.min.js'%}"></script>
-        <script src="{% static 'assets copy/js/popper.min.js'%}"></script>
-        <script src="{% static 'assets copy/js/bootstrap-material-design.js'%}"></script>
-        <script src="{% static 'assets copy/js/modernizr.min.js'%}"></script>
-        <script src="{% static 'assets copy/js/detect.js'%}"></script>
-        <script src="{% static 'assets copy/js/fastclick.js'%}"></script>
-        <script src="{% static 'assets copy/js/jquery.slimscroll.js'%}"></script>
-        <script src="{% static 'assets copy/js/jquery.blockUI.js'%}"></script>
-        <script src="{% static 'assets copy/js/waves.js'%}"></script>
-        <script src="{% static 'assets copy/js/jquery.nicescroll.js'%}"></script>
-        <script src="{% static 'assets copy/js/jquery.scrollTo.min.js'%}"></script>
-
-        <!-- App js -->
-        <script src="{% static 'assets copy/js/app.js'%}"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const form = document.querySelector("form");
+                const submitButton = document.getElementById("submit-button");
+                const spinner = document.getElementById("loading-spinner");
+                const buttonText = document.getElementById("button-text");
         
+                form.addEventListener("submit", function () {
+                    // Show the spinner
+                    spinner.classList.remove("d-none");
+        
+                    // Update button text to "Registering"
+                    buttonText.textContent = "Searching User...";
+        
+                    // Disable the button to prevent multiple submissions
+                    submitButton.disabled = true;
+                });
+            });
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
     </body>
-</html>'%}
+</html>
