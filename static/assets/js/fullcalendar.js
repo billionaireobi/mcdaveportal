@@ -8,31 +8,7 @@
     // Calendar Event Source
     var sptCalendarEvents = {
       id: 1,
-      events: [{
-        id: '1',
-        start: curYear + '-' + curMonth + '-02',
-        end: curYear + '-' + curMonth + '-03',
-        title: 'Spruko Meetup',
-        backgroundColor: '#845adf',
-        borderColor: '#845adf',
-        description: 'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary'
-      }, {
-        id: '2',
-        start: curYear + '-' + curMonth + '-17',
-        end: curYear + '-' + curMonth + '-17',
-        title: 'Design Review',
-        backgroundColor: '#23b7e5',
-        borderColor: '#23b7e5',
-        description: 'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary'
-      }, {
-        id: '3',
-        start: curYear + '-' + curMonth + '-13',
-        end: curYear + '-' + curMonth + '-13',
-        title: 'Lifestyle Conference',
-        backgroundColor: '#845adf',
-        borderColor: '#845adf',
-        description: 'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary'
-      }, {
+      events: [ {
         id: '4',
         start: curYear + '-' + curMonth + '-21',
         end: curYear + '-' + curMonth + '-21',

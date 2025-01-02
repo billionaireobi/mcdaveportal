@@ -1,14 +1,24 @@
-from django.shortcuts import render,redirect
-from django.contrib.auth import login,logout,authenticate,get_user_model
+# Django core imports
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_http_methods
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import *
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 from django.core.mail import EmailMessage
 from django.conf import settings
+from django.http import JsonResponse
 
+from django.views.decorators.csrf import csrf_exempt
+
+# Python standard library imports
+from datetime import datetime
+import json
+
+# Local imports
+from .models import *  # It's better to explicitly import what you need
 
 # create your vies here 
 def log_in_user(request):
@@ -74,6 +84,7 @@ def resetpassword(request, reset_id):
         password_reset = passwordreset.objects.get(reset_id=reset_id)
         current_time = timezone.now()
         # Check for link expired
+        passwords_have_error = True
         # expiration_time = password_reset.created_when + timezone.timedelta(minutes=10)
         expiration_time = password_reset.created_when + timezone.timedelta(minutes=10)   
         if current_time > expiration_time:
@@ -124,7 +135,102 @@ def hrms_page(request):
     return render(request, "hrms/dashboards/index.html")
 
 
-@login_required(login_url='/log-in/') 
+@login_required(login_url='/login/')
 def calendar_view(request):
-    return render(request, "hrms/dashboards/calendar.html")
-    
+    try:
+        events = Event.objects.filter(user=request.user)
+        upcoming_events = events.filter(
+            start__gte=timezone.now()
+        ).order_by('start')[:5]
+        
+        return render(request, "calendar/calendar.html", {
+            'upcoming_events': upcoming_events
+        })
+    except Exception as e:
+        return render(request, "calendar/calendar.html", {
+            'error': str(e),
+            'upcoming_events': []
+        })
+
+@login_required
+def get_events(request):
+    events = Event.objects.filter(user=request.user)
+    events_list = [{
+        'id': event.id,
+        'title': event.title,
+        'start': event.start.isoformat(),
+        'end': event.end.isoformat() if event.end else None,
+        'description': event.description
+    } for event in events]
+    return JsonResponse(events_list, safe=False)
+
+@login_required
+@csrf_exempt
+def add_event(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            event = Event.objects.create(
+                user=request.user,
+                title=data['title'],
+                description=data.get('description', ''),
+                start=datetime.fromisoformat(data['start'].replace('Z', '+00:00')),
+                end=datetime.fromisoformat(data['end'].replace('Z', '+00:00')) if data.get('end') else None
+            )
+            return JsonResponse({
+                'id': event.id,
+                'title': event.title,
+                'description': event.description,
+                'start': event.start.isoformat(),
+                'end': event.end.isoformat() if event.end else None,
+            }, status=201)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'error': f'Missing required field: {str(e)}'}, status=400)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+@csrf_exempt
+def update_event(request, event_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            event = get_object_or_404(Event, id=event_id, user=request.user)
+            event.title = data['title']
+            event.description = data.get('description', '')
+            event.start = datetime.fromisoformat(data['start'].replace('Z', '+00:00'))
+            event.end = datetime.fromisoformat(data['end'].replace('Z', '+00:00')) if data.get('end') else None
+            event.save()
+            return JsonResponse({
+                'id': event.id,
+                'title': event.title,
+                'description': event.description,
+                'start': event.start.isoformat(),
+                'end': event.end.isoformat() if event.end else None,
+            })
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        except KeyError as e:
+            return JsonResponse({'error': f'Missing required field: {str(e)}'}, status=400)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+@login_required
+@csrf_exempt
+def delete_event(request, event_id):
+    if request.method == 'DELETE':
+        try:
+            event = get_object_or_404(Event, id=event_id, user=request.user)
+            event.delete()
+            return JsonResponse({'success': True}, status=204)
+        except Event.DoesNotExist:
+            return JsonResponse({'error': 'Event not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method'}, status=405)

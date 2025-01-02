@@ -11,7 +11,15 @@ urlpatterns = [
     path('passwordreset/<str:reset_id>/', views.passwordresetsent, name='passwordreset'),
     path('resetpassword/<str:reset_id>/', views.resetpassword, name='resetpassword'),
     # path("link_expired/",views.link_expired,name="link_expired"),
+    
+    # calendar
+    
     path('calendar/', views.calendar_view, name='calendar'),
+    path('get_events/', views.get_events, name='get_events'),
+    path('add_event/', views.add_event, name='add_event'),
+    path('update_event/<int:event_id>/', views.update_event, name='update_event'),
+    path('delete_event/<int:event_id>/', views.delete_event, name='delete_event'),
+    # calendar
     path("hrms/",views.hrms_page,name="hrms"),
     #  # djangos default authentication urls
     path('accounts/', include('django.contrib.auth.urls')),

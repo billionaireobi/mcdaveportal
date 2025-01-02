@@ -1,5 +1,5 @@
 {% extends "partials/base.html" %}
-
+{% load static%}
 {%block title%}MCDAVE HOME{%endblock%}
 {%block content%}
 
@@ -44,7 +44,7 @@
                          <div class="d-flex align-items-center w-100">
                              <div class="me-2">
                                  <span class="avatar avatar-rounded">
-                                     <img src="../assets/images/faces/12.jpg" alt="img">
+                                     <img src="{% static 'assets/images/faces/12.jpg'%}" alt="img">
                                  </span>
                              </div>
                              <div class="">
@@ -64,7 +64,7 @@
                          <div class="d-flex align-items-center w-100">
                              <div class="me-2">
                                  <span class="avatar avatar-rounded">
-                                     <img src="../assets/images/faces/1.jpg" alt="img">
+                                     <img src="{% static 'assets/images/faces/1.jpg'%}" alt="img">
                                  </span>
                              </div>
                              <div class="">
@@ -85,7 +85,7 @@
                          <div class="d-flex align-items-center w-100">
                              <div class="me-2">
                                  <span class="avatar avatar-rounded">
-                                     <img src="../assets/images/faces/5.jpg" alt="img">
+                                     <img src="{% static 'assets/images/faces/5.jpg'%}" alt="img">
                                  </span>
                              </div>
                              <div class="">
